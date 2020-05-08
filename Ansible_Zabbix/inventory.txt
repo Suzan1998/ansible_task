@@ -1,0 +1,5 @@
+[hosts]
+local ansible_host=127.0.0.1
+zabbix-server ansible_host=172.25.1.4
+zabbix-agent ansible_host=172.25.1.6
+

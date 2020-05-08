@@ -1,0 +1,12 @@
+---
+- name: Create Repos Dir
+  file:
+    path: /var/www/html/repos
+    state: directory
+
+- name: Create Local Repository
+  yum_repository:
+    name: local
+    baseurl: "file://{{ repos_path }}"
+    enabled: yes
+    gpgcheck: no

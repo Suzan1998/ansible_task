@@ -1,0 +1,97 @@
+---
+- name: Disable all repo
+  become: yes
+  yum_repository:
+    baseurl: /etc/yum.repos.d
+    description: All Repo
+    name: "*"
+    enabled: no
+
+- name: enable local repository
+  become: yes
+  yum_repository:
+    baseurl: /etc/yum.repos.d
+    description: My local repo
+    name: local
+    enabled: yes
+  
+  
+- name: Install zabbix-server repositories
+  become: yes
+  yum:
+    name:  "{{ item }}"
+    state: installed
+  with_items:
+      - "{{ zabbix_release }}"
+      - "{{ zabbix_server_mysql }}"
+      - "{{ zabbix_web_mysql }}"
+      - "{{ zabbix_agent }}"
+      
+- name: Disable all repo
+  become: yes
+  yum_repository:
+    baseurl: /etc/yum.repos.d
+    description: All Repo
+    name: "*"
+    enabled: yes
+
+- name: enable local repository
+  become: yes
+  yum_repository:
+    baseurl: /etc/yum.repos.d
+    description: My local repo
+    name: local
+    enabled: no 
+
+- name: Start zabbix-server
+  service:
+    name: zabbix-server
+    state: started
+    enabled: yes
+
+- name: Start zabbix-agent
+  service: 
+    name: zabbix-agent
+    state: started
+    enabled: yes
+- name: Start php-fpm
+  service:
+    name: php-fpm
+    state: started
+    enabled: yes
+
+## tasks to configure the server
+
+- name: import mysql tables
+  shell: >
+    zcat /usr/share/doc/zabbix-server-mysql/create.sql.gz \
+    | mysql -u suzan -psuzan zabbix_db \
+    && touch /root/.zabbix_db.schema.imported
+    creates=/root/.zabbix_db.schema.imported
+
+- name: config zabbix_server.conf [DBHost]
+  ini_file:
+    dest: /etc/zabbix/zabbix_server.conf
+    section:
+    option: DBHost
+    value: "{{ db_host }}"
+    backup: yes
+- name: config zabbix_server.conf [DBName]
+  ini_file:
+    dest: /etc/zabbix/zabbix_server.conf
+    section: 
+    option: DBName
+    value: "{{ db_name }}"
+    backup: yes
+    
+- name: config zabbix_server.conf [DBUser]
+  ini_file:
+    dest: /etc/zabbix/zabbix_server.conf
+    section: 
+    option: DBUser
+    value: "{{ db_user }}"
+    backup: yes
+
+
+
+

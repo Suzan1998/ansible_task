@@ -1,0 +1,67 @@
+---
+
+- name: Disable all repo
+  become: yes
+  yum_repository:
+    baseurl: /etc/yum.repos.d
+    description: All Repo
+    name: "*"
+    enabled: no
+
+- name: enable local repository
+  become: yes
+  yum_repository:
+    baseurl: /etc/yum.repos.d
+    description: My local repo
+    name: local
+    enabled: yes
+ 
+- name: Install Zabbix Dependencies
+  become: yes
+  yum:
+    name:  "{{ item }}"
+    state: installed
+  with_items:
+      - "{{ zabbix_release }}"
+      - zabbix
+      - "{{ zabbix_agent }}"
+      
+      
+- name: Disable all repo
+  become: yes
+  yum_repository:
+    baseurl: /etc/yum.repos.d
+    description: All Repo
+    name: "*"
+    enabled: yes
+
+- name: enable local repository
+  become: yes
+  yum_repository:
+    baseurl: /etc/yum.repos.d
+    description: My local repo
+    name: local
+    enabled: no
+
+## tasks to configure the agent
+
+- name: config zabbix_agentd.conf
+  ini_file: 
+    dest: /etc/zabbix/zabbix_agentd.conf
+    section:
+    option: Server
+    value: "{{ my_zabbix_server_ip }}"
+        backup: yes
+- name: config zabbix_agentd.conf
+  ini_file: 
+    dest: /etc/zabbix/zabbix_agentd.conf
+    section:
+    option: Hostname
+    value: "{{ my_zabbix_server }}"
+    backup: yes
+
+- name: Restart zabbix-agent Service
+  service:
+     name: zabbix-agent
+     state: restarted 
+

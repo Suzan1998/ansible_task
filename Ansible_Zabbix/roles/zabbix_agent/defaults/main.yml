@@ -1,0 +1,18 @@
+---
+
+zabbix_release: "zabbix-release-4.0-1.el7.noarch.rpm"
+
+zabbix_agent: "zabbix-agent-4.4.4-1.el7.x86_64.rpm "
+
+zabbix_web: "zabbix-web-4.4.4-1.el7.noarch.rpm"
+
+zabbix_get: "zabbix-get-4.4.4-1.el7.x86_64.rpm"
+
+zabbix_sender: "zabbix-sender-4.4.4-1.el7.x86_64.rpm"
+
+zabbix_server_mysql: "zabbix-server-mysql-4.4.4-1.el7.x86_64.rpm"
+
+zabbix_web_mysql: "zabbix-web-mysql-4.4.4-1.el7.noarch.rpm"
+
+my_zabbix_server_ip: 172.25.1.5
+my_zabbix_server: zabbix-server

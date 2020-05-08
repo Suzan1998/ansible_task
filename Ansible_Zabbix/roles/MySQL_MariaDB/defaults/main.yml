@@ -1,0 +1,6 @@
+---
+mysql_root_password: "suzan"
+
+db_name: "zabbix_db"
+db_user: "suzan"
+db_user_password: "suzan"

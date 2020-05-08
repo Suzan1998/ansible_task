@@ -1,0 +1,6 @@
+---
+epel_repo_url: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm"
+
+remi_repo_url: "https://rpms.remirepo.net/enterprise/remi-release-8.rpm"
+
+phpVars: [php-pear, php-cgi, php-common, php-mbstring, php-snmp, php-gd, php-pecl-mysql, php-xml, php-mysql, php-gettext, php-bcmath]

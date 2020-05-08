@@ -1,0 +1,11 @@
+---
+- name: Install Appache Web Server
+  yum:
+    name: httpd 
+    state: latest
+- name: Start a httpd service 
+  service: 
+    name: httpd
+    state: restarted
+    enabled: yes
+

@@ -1,0 +1,30 @@
+---
+
+- name: Disable SELinux
+  become: yes
+  selinux:
+     state: disabled
+
+
+- name: Configure Firewall to enable http
+  firewalld:
+    service: http
+    permanent: yes
+    state: enabled
+
+- name: Configure Firewall to enable https
+  firewalld:
+    service: https
+    permanent: yes
+    state: enabled
+
+- name: Configure Firewall to enable 10050/10051tcp
+  firewalld:
+    port: 10050-10051/tcp
+    permanent: yes
+    state: enabled
+- name: reload service firewalld
+  systemd:
+    name: firewalld
+    state: reloaded
+

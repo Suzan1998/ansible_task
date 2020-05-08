@@ -1,0 +1,47 @@
+---
+- name: Install MariaDB
+  become: yes 
+  yum:
+    name: mariadb-server
+    state: installed
+  
+
+- name: Start MariaDb Service
+  service:
+    name: mariadb
+    enabled: true
+    state: started
+- name: Set MySQL root Password
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    user: root
+    check_implicit_admin: true
+    password: "{{ mysql_root_password }}"
+    host: localhost
+- name: Remove Remote Root
+  mysql_user:
+    check_implicit_admin: true
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    user: root
+    host: "{{ ansible_fqdn }}"
+    state: absent
+   
+- name: Create MySQL DB 
+  mysql_db:
+     name: "{{ db_name }}"
+     login_user: root
+     login_password: "{{ mysql_root_password }}"
+     state: present
+
+- name: Create DataBase User
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: "{{ db_user }}"
+    password: "{{ db_user_password }}"
+    priv: '*.*:ALL'
+    state: present
+    host: '%'
+

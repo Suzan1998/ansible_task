@@ -1,0 +1,35 @@
+---
+- name: Prerequisties Appache, SELinux,Firewall, DataBase
+  hosts: zabbix-agent
+  gather_facts: yes
+  roles:
+     - SELinux_and_Firewall
+     - Appache
+     - PHP
+     - MySQL_MariaDB
+      
+- name: Create Yum Repo
+  hosts: local
+  gather_facts: yes
+  roles:
+     - create_yum_repo 
+     
+
+- name: Add Yum Repo
+  hosts: zabbix-server, zabbix-agent
+  gather_facts: yes
+  roles:
+     - add_yum_repo
+
+- name: Install and conf zabbix-server
+  hosts: zabbix-server
+  gather_facts: yes
+  roles:
+     - zabbix_server
+
+- name: Install and conf zabbix-agent
+  hosts: zabbix-agent
+  gather_facts: yes
+  roles:
+     - zabbix_agent
+
